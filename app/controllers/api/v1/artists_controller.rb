@@ -1,51 +1,57 @@
-class ArtistsController < ApplicationController
-  before_action :set_artist, only: [:show, :update, :destroy]
+module Api
+  module V1
 
-  # GET /artists
-  def index
-    @artists = Artist.all
+    class ArtistsController < ApplicationController
+      before_action :authorize_access_request!, except: [:show, :index]
+      before_action :set_artist, only: [:show, :update, :destroy]
 
-    render json: @artists
-  end
+      # GET /artists
+      def index
+        @artists = Artist.all
 
-  # GET /artists/1
-  def show
-    render json: @artist
-  end
+        render json: @artists
+      end
 
-  # POST /artists
-  def create
-    @artist = Artist.new(artist_params)
+      # GET /artists/1
+      def show
+        render json: @artist
+      end
 
-    if @artist.save
-      render json: @artist, status: :created, location: @artist
-    else
-      render json: @artist.errors, status: :unprocessable_entity
+      # POST /artists
+      def create
+        @artist = Artist.new(artist_params)
+
+        if @artist.save
+          render json: @artist, status: :created, location: @artist
+        else
+          render json: @artist.errors, status: :unprocessable_entity
+        end
+      end
+
+      # PATCH/PUT /artists/1
+      def update
+        if @artist.update(artist_params)
+          render json: @artist
+        else
+          render json: @artist.errors, status: :unprocessable_entity
+        end
+      end
+
+      # DELETE /artists/1
+      def destroy
+        @artist.destroy
+      end
+
+      private
+        # Use callbacks to share common setup or constraints between actions.
+        def set_artist
+          @artist = Artist.find(params[:id])
+        end
+
+        # Only allow a trusted parameter "white list" through.
+        def artist_params
+          params.require(:artist).permit(:name)
+        end
     end
   end
-
-  # PATCH/PUT /artists/1
-  def update
-    if @artist.update(artist_params)
-      render json: @artist
-    else
-      render json: @artist.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /artists/1
-  def destroy
-    @artist.destroy
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_artist
-      @artist = Artist.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def artist_params
-      params.require(:artist).permit(:name, :user_id)
-    end
 end
