@@ -51,13 +51,12 @@ export default {
             .then(response => this.signinSuccesful(response))
             .catch(error => this.signinFailed(error))
         },
-        signinSuccesful (response){
-            if (!Response.data.csrf){
+        signinSuccesful(response){
+            if (!response.data.csrf){
                 this.signinFailed(response)
                 return
             }
-
-            localStorage.csrf = response.dat.csrf
+            localStorage.csrf = response.data.csrf
             localStorage.signedIn = true
             this.error = ''
             this.$router.replace('/records')

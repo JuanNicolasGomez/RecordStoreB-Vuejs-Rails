@@ -11,6 +11,7 @@ class SignupController < ApplicationController
                               value: tokens[:access],
                               httponly: true,
                               secure: Rails.env.production? )
+      puts ("ENTRAAAA")
       render json: {csrf: tokens[:csrf]}
     else
       render json: {error: user.errors.full_messages.join(' ')}, status: :unporcessable_entity
