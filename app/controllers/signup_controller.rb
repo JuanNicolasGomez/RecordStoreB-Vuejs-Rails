@@ -4,10 +4,10 @@ class SignupController < ApplicationController
 
     if user.save
       payload = { user_id: user.id}
-      session = JWTSeessions::Session.new(payload: payload, refresh_by_acces_allowed: true)
+      session = JWTSessions::Session.new(payload: payload, refresh_by_acces_allowed: true)
       tokens = session.login
 
-      response.set_cookie(JWTSessions.acces_cookie,
+      response.set_cookie(JWTSessions.access_cookie,
                               value: tokens[:access],
                               httponly: true,
                               secure: Rails.env.production? )
