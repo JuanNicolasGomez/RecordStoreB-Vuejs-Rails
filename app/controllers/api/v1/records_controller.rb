@@ -1,8 +1,8 @@
 module Api
   module V1
     class RecordsController < ApplicationController
-      before_action :authorize_access_request!
-      before_action :set_record, only: [:show,:create, :update, :destroy]
+      #before_action :authorize_access_request!
+      before_action :set_record, only: [:show, :update, :destroy]
 
       # GET /records
       def index
@@ -28,7 +28,7 @@ module Api
           render json: @record, status: :created
         else
           puts("SAVEEEELSE")
-          render json: @record.errors, status: :unprocessable_entity
+          render json: @record.errors, status:unprocessable_entity
         end
       end
 
@@ -54,7 +54,7 @@ module Api
 
         # Only allow a trusted parameter "white list" through.
         def record_params
-          params.permit(:title, :year, :artist_id)
+          params.require(:record).permit(:title, :year, :artist_id)
         end
     end
   end

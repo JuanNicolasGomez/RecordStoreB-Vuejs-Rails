@@ -38,6 +38,7 @@ export default {
           this.$router.replace('/')
         })
         .catch(error => this.setError(error, 'Cannot sign out'))
+    
     }
   }
 }

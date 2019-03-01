@@ -1,13 +1,14 @@
 class SigninController < ApplicationController
-    before_action :authorize_access_request!, only: [:destroy]
+    #before_action :authorize_access_request!, only: [:destroy]
 
     def create
-        user = User.find_by!(email: params[:email])
+        current_user = User.find_by!(email: params[:email])
 
-        if user.authenticate(params[:password])
-            payload = {user_id: user.id}
+        if current_user.authenticate(params[:password])
+            payload = {user_id: current_user.id}
             session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
             tokens = session.login
+            print( tokens)
             response.set_cookie(JWTSessions.access_cookie,
                                     value: tokens[:access],
                                     httponly: true,
@@ -15,14 +16,17 @@ class SigninController < ApplicationController
             puts ("SIGNNNIIIIN")
             render json: {csrf: tokens[:csrf]}
         else
-            puts(SIGNNIIINELSEEE)
+            puts("SIGNNIIINELSEEE")
             not_authorized
         end
     end
 
     def destroy
-        session = JWTSessions.new(payload: payload)
-        session.flush_by_access_payload
+        puts("DESTROY 1")
+        #session = JWTSessions::Session.new(payload: payload)
+        puts("DESTROY 2")
+        #session.flush_by_access_payload
+        puts("DESTROY 3")
         render json: :ok
 
     end

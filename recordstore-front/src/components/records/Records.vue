@@ -150,6 +150,7 @@ export default {
     },
     updateRecord (record) {
       this.editedRecord = ''
+      console.log("IDDD:: " + record.id)
       this.$http.secured.patch(`/api/v1/records/${record.id}`, { record: { title: record.title, year: record.year, artist_id: record.artist } })
         .catch(error => this.setError(error, 'Cannot update record'))
     }

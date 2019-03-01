@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-md n-auto py-10">
+    <div class="max-w-md m-auto py-10">
         <div class="text-red" v-if="error">{{ error }}</div>
         <h3 class="font-mono font-regular text-3xl mb-4">Add a new artist</h3>
 
@@ -10,7 +10,7 @@
                 autofocus
                 autocomplete="off"
                 placeholder="Type an artist name"
-                v-model="newArtist.name">
+                v-model="newArtist.name"/>
             </div>
             <input type="submit" value="Add Artist" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center" />
         </form>
@@ -19,7 +19,7 @@
 
         <ul class ="list-reset mt-4">
             <li class="py-4" v-for="artist in artists" :key="artist.id" :artist="artist">
-                <div class= "flex.items-center.justify-between felx-wrap">
+                <div class= "flex items-center justify-between felx-wrap">
                     <p class="block flex-1 font-mono font-semibold flex items-center ">
                     <svg class="fill-current text-indigo w-6 h-6 mr-2" viewBox="0 0 20 20" width="20" height="20"><title>music artist</title><path d="M15.75 8l-3.74-3.75a3.99 3.99 0 0 1 6.82-3.08A4 4 0 0 1 15.75 8zm-13.9 7.3l9.2-9.19 2.83 2.83-9.2 9.2-2.82-2.84zm-1.4 2.83l2.11-2.12 1.42 1.42-2.12 2.12-1.42-1.42zM10 15l2-2v7h-2v-5z"></path></svg>
                     {{ artist.name }}
@@ -52,7 +52,7 @@
                 artists:[],
                 newArtist: [],
                 error: '',
-                editArtist: ''
+                editedArtist: ''
             }
         },
         created(){
@@ -60,7 +60,7 @@
                 this.$router.replace('/')
             }else{
                 this.$http.secured.get('/api/v1/artists')
-                    .then(response => {this.artist = response.data})
+                    .then(response => {this.artists = response.data})
                     .catch(error => this.setError(error, 'Something went wrong' ))
             }
         },
